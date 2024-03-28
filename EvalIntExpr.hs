@@ -14,7 +14,11 @@ data IntExpr =
 -- evalIntExpr returns the Int result of evaluating the IntExpr
 -- expression-tree given by its argument.
 evalIntExpr :: IntExpr -> Int
-evalIntExpr _ = error "TODO"
+evalIntExpr (Leaf n) = n
+evalIntExpr (Add expr1 expr2) = evalIntExpr expr1 + evalIntExpr expr2
+evalIntExpr (Sub expr1 expr2) = evalIntExpr expr1 - evalIntExpr expr2
+evalIntExpr (Mul expr1 expr2) = evalIntExpr expr1 * evalIntExpr expr2
+evalIntExpr (Uminus expr) = - (evalIntExpr expr)
 
 
 testEvalIntExpr = do

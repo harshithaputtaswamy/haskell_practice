@@ -19,7 +19,23 @@ type Assoc a = [ (String, a) ]
 -- should return Nothing. Hint: use Data.List.assoc imported above
 -- and do notation.
 evalMaybeExpr :: MaybeExpr -> Assoc Int -> Maybe Int
-evalMaybeExpr _ _ = error "TODO"
+evalMaybeExpr (Leaf n) _ = Just n
+evalMaybeExpr (Id id) assoc = lookup id assoc
+evalMaybeExpr (Add expr1 expr2) assoc = do
+  val1 <- evalMaybeExpr expr1 assoc
+  val2 <- evalMaybeExpr expr2 assoc
+  return $ val1 + val2
+evalMaybeExpr (Sub expr1 expr2) assoc = do
+  val1 <- evalMaybeExpr expr1 assoc
+  val2 <- evalMaybeExpr expr2 assoc
+  return $ val1 - val2
+evalMaybeExpr (Mul expr1 expr2) assoc = do
+  val1 <- evalMaybeExpr expr1 assoc
+  val2 <- evalMaybeExpr expr2 assoc
+  return $ val1 * val2
+evalMaybeExpr (Uminus expr) assoc = do
+  val <- evalMaybeExpr expr assoc
+  return $ -val
 
 
 testEvalMaybeExpr = do 

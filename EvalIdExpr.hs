@@ -22,7 +22,14 @@ type Assoc v = [ (String, v) ]
 -- value should default to 0.
 -- Hint: use Data.List.lookup imported above.
 evalIdExpr :: IdExpr -> Assoc Int -> Int
-evalIdExpr _ = error "TODO"
+evalIdExpr (Leaf n) _ = n
+evalIdExpr (Id id) assoc = case lookup id assoc of
+  Just val -> val
+  Nothing -> 0
+evalIdExpr (Add expr1 expr2) assoc = evalIdExpr expr1 assoc + evalIdExpr expr2 assoc
+evalIdExpr (Sub expr1 expr2) assoc = evalIdExpr expr1 assoc - evalIdExpr expr2 assoc
+evalIdExpr (Mul expr1 expr2) assoc = evalIdExpr expr1 assoc * evalIdExpr expr2 assoc
+evalIdExpr (Uminus expr) assoc = - (evalIdExpr expr assoc)
 
 
 testEvalIdExpr = do

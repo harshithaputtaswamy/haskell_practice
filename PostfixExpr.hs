@@ -51,7 +51,16 @@ data PostfixExpr =
 --    + When there are no unprocessed tokens, the stack should contain
 --      a single PostfixExpr containing the value to be returned.
 postfixExpr :: String -> PostfixExpr
-postfixExpr _ = error "TODO"
+postfixExpr postfix = head $ foldl evalToken [] (words postfix)
+  where
+    evalToken stack token
+      | token == "+" = evalBinaryOp stack Add
+      | token == "-" = evalBinaryOp stack Sub
+      | token == "*" = evalBinaryOp stack Mul
+      | token == "uminus" = Uminus (head stack) : tail stack
+      | otherwise = Leaf (read token) : stack
+
+    evalBinaryOp (r:l:stack) op = op l r : stack
 
 testPostfixExpr = do
   print "******* test postfixExpr"
